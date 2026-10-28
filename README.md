@@ -4,9 +4,9 @@
 >
 > | Link | URL |
 > |------|-----|
-> | 🐙 **GitHub Repository** | [YashYK08/Yash-smart-healthcare-project](https://github.com/YashYK08/Yash-smart-healthcare-project) |
-> | 🚀 **Live Demo (Flask)** | Run locally: `python app.py` → http://127.0.0.1:5000 |
-> | 📊 **Tableau Dashboard** | [Tableau Public – Yash Kourav](https://public.tableau.com/app/profile/yash.kourav) |
+> | 🐙 **GitHub Repository** | [https://github.com/YashYK08/Yash-smart-healthcare-project](https://github.com/YashYK08/Yash-smart-healthcare-project) |
+> | 🚀 **Live Interactive Demo** | [https://yashyk08.github.io/Yash-smart-healthcare-project/](https://yashyk08.github.io/Yash-smart-healthcare-project/) |
+> | 📊 **Tableau Workbook (.twb)** | [Download Smart_Healthcare_Analytics.twb](https://github.com/YashYK08/Yash-smart-healthcare-project/raw/main/Smart_Healthcare_Analytics.twb) |
 
 ---
 
