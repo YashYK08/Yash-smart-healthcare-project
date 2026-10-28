@@ -1,0 +1,209 @@
+{
+  "kpis": {
+    "total": 5000,
+    "heart_disease": 1499,
+    "heart_disease_pct": 30.0,
+    "diabetes": 1746,
+    "diabetes_pct": 34.9,
+    "stroke": 1243,
+    "stroke_pct": 24.9,
+    "avg_bp": 134.4,
+    "avg_bmi": 25.0,
+    "avg_age": 48.8
+  },
+  "age_disease": {
+    "labels": [
+      "Teenager",
+      "Young Adult",
+      "Adult",
+      "Middle Age",
+      "Senior",
+      "Old"
+    ],
+    "heart": [
+      0.0,
+      0.0,
+      0.0,
+      11.7,
+      79.7,
+      100.0
+    ],
+    "diabetes": [
+      0.0,
+      0.0,
+      0.0,
+      21.8,
+      100.0,
+      100.0
+    ],
+    "stroke": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      60.0,
+      100.0
+    ]
+  },
+  "bmi_disease": {
+    "labels": [
+      "Underweight",
+      "Normal",
+      "Overweight",
+      "Obese"
+    ],
+    "heart": [
+      20.5,
+      26.0,
+      32.9,
+      40.0
+    ],
+    "diabetes": [
+      38.2,
+      32.8,
+      34.7,
+      38.5
+    ],
+    "stroke": [
+      25.4,
+      23.9,
+      25.0,
+      26.5
+    ]
+  },
+  "bp_by_age": {
+    "labels": [
+      "Teenager",
+      "Young Adult",
+      "Adult",
+      "Middle Age",
+      "Senior",
+      "Old"
+    ],
+    "values": [
+      134.5,
+      134.66,
+      133.61,
+      133.97,
+      134.34,
+      135.66
+    ]
+  },
+  "alc_smk": {
+    "labels": [
+      "Teenager",
+      "Young Adult",
+      "Adult",
+      "Middle Age",
+      "Senior",
+      "Old"
+    ],
+    "smoking": [
+      526,
+      414,
+      411,
+      414,
+      408,
+      365
+    ],
+    "alcohol": [
+      514,
+      382,
+      398,
+      409,
+      446,
+      358
+    ]
+  },
+  "exercise": {
+    "labels": [
+      "Sedentary",
+      "Moderate",
+      "Active"
+    ],
+    "values": [
+      1647,
+      1677,
+      1676
+    ]
+  },
+  "age_dist": {
+    "labels": [
+      "Teenager",
+      "Young Adult",
+      "Adult",
+      "Middle Age",
+      "Senior",
+      "Old"
+    ],
+    "values": [
+      1019,
+      793,
+      813,
+      804,
+      819,
+      752
+    ]
+  },
+  "heatmap": {
+    "rows": [
+      "Underweight",
+      "Normal",
+      "Overweight",
+      "Obese"
+    ],
+    "cols": [
+      "Sedentary",
+      "Moderate",
+      "Active"
+    ],
+    "matrix": [
+      [
+        18.8,
+        20.6,
+        22.2
+      ],
+      [
+        25.8,
+        26.9,
+        25.3
+      ],
+      [
+        33.0,
+        34.9,
+        30.7
+      ],
+      [
+        42.9,
+        39.9,
+        37.7
+      ]
+    ]
+  },
+  "fatigue": {
+    "labels": [
+      "Teenager",
+      "Young Adult",
+      "Adult",
+      "Middle Age",
+      "Senior",
+      "Old"
+    ],
+    "no_fatigue": [
+      498,
+      376,
+      391,
+      394,
+      422,
+      343
+    ],
+    "fatigue": [
+      521,
+      417,
+      422,
+      410,
+      397,
+      409
+    ]
+  }
+}
