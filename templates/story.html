@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% block title %}Story – Smart Healthcare{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <div class="text-center mb-5">
+    <div class="badge-pill mb-3">📖 Data Story</div>
+    <h1 class="fw-800 fs-3 text-white">The Healthcare Risk Story</h1>
+    <p class="text-muted">A narrative walkthrough of chronic disease insights — from population overview to actionable clinical decisions.</p>
+  </div>
+
+  <!-- Scene 1 -->
+  <div class="scene">
+    <div class="scene-num">Scene 1 — Population Overview</div>
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <h4 class="fw-700 text-white mb-3">Who Are Our Patients?</h4>
+        <p class="text-muted">
+          Our dataset captures <strong class="text-white">5,000 patients</strong> aged 18–79, with an average age of
+          <strong class="text-accent">{{ kpis.avg_age }} years</strong> and average BMI of
+          <strong class="text-accent">{{ kpis.avg_bmi }}</strong>.
+          The cohort spans multiple age groups and BMI categories, providing a rich landscape for analysis.
+        </p>
+        <ul class="text-muted mt-3" style="list-style:none;padding:0;">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-accent me-2"></i><strong class="text-white">{{ kpis.heart_disease_pct }}%</strong> diagnosed with Heart Disease</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i><strong class="text-white">{{ kpis.diabetes_pct }}%</strong> diagnosed with Diabetes</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-purple-soft me-2"></i><strong class="text-white">{{ kpis.stroke_pct }}%</strong> diagnosed with Stroke</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-danger-soft me-2"></i><strong class="text-white">{{ kpis.high_risk_count }}</strong> patients flagged as high-risk (score ≥ 80)</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-card">
+          <h6>Disease Prevalence Overview</h6>
+          <canvas id="s1Chart" style="max-height:220px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 2 -->
+  <div class="scene">
+    <div class="scene-num">Scene 2 — Age & the Risk Factor</div>
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <div class="chart-card">
+          <h6>Heart Disease by Age Group (%)</h6>
+          <canvas id="s2Chart" style="max-height:220px;"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h4 class="fw-700 text-white mb-3">Age Drives Risk — Significantly</h4>
+        <p class="text-muted">
+          As patients age, the prevalence of chronic diseases rises sharply. Patients in the
+          <strong class="text-accent">61+ age group</strong> show significantly higher rates of Heart Disease,
+          Diabetes, and Stroke compared to younger cohorts.
+        </p>
+        <p class="text-muted mt-2">
+          <strong class="text-white">Dr. Michael Carter</strong> uses this insight to prioritize
+          screening for older patients and establish age-based early intervention protocols.
+        </p>
+        <div class="alert mt-3" style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;color:#6EE7B7;font-size:.9rem;">
+          💡 <strong>Insight:</strong> Age is the strongest single demographic predictor of chronic disease in this dataset.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 3 -->
+  <div class="scene">
+    <div class="scene-num">Scene 3 — Lifestyle Habits & Disease</div>
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <h4 class="fw-700 text-white mb-3">Smoking, Alcohol &amp; Exercise</h4>
+        <p class="text-muted">
+          Lifestyle behaviors have a measurable impact on disease outcomes.
+          <strong class="text-white">Smokers</strong> and <strong class="text-white">alcohol consumers</strong>
+          show elevated rates of all three chronic conditions. Conversely, patients with higher
+          <strong class="text-accent">exercise levels</strong> carry significantly lower average risk scores.
+        </p>
+        <p class="text-muted mt-2">
+          <strong class="text-white">Emily Rodriguez</strong> leverages these correlations to design
+          targeted wellness programs for high-risk behavioral segments.
+        </p>
+        <div class="alert mt-3" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;color:#FCA5A5;font-size:.9rem;">
+          ⚠️ <strong>Key Finding:</strong> Sedentary patients carry ~25% higher risk scores than active patients.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-card">
+          <h6>Exercise Level vs Avg Risk Score</h6>
+          <canvas id="s3Chart" style="max-height:220px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 4 -->
+  <div class="scene">
+    <div class="scene-num">Scene 4 — Clinical Indicators</div>
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <div class="chart-card">
+          <h6>Clinical Averages — Heart Disease vs No Disease</h6>
+          <canvas id="s4Chart" style="max-height:240px;"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h4 class="fw-700 text-white mb-3">Blood Pressure, Cholesterol &amp; Glucose</h4>
+        <p class="text-muted">
+          Patients with Heart Disease consistently show elevated readings across all four
+          clinical markers: Blood Pressure, Cholesterol, Glucose, and BMI.
+          The radar chart reveals the clinical fingerprint of high-risk patients.
+        </p>
+        <p class="text-muted mt-2">
+          Early detection of elevated cholesterol and glucose levels can prompt preventive interventions,
+          reducing the risk of disease progression.
+        </p>
+        <div class="alert mt-3" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:10px;color:#FDE68A;font-size:.9rem;">
+          📌 <strong>Clinical Tip:</strong> Combined elevation of BP + Cholesterol + Glucose is a strong multi-marker risk signal.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 5 -->
+  <div class="scene">
+    <div class="scene-num">Scene 5 — Symptom Patterns</div>
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <h4 class="fw-700 text-white mb-3">Fatigue, Chest Pain &amp; Dizziness</h4>
+        <p class="text-muted">
+          Symptom analysis reveals which clinical complaints are most prevalent in the population.
+          <strong class="text-white">Chest Pain</strong> is the most commonly reported symptom,
+          followed by Fatigue and Dizziness.
+        </p>
+        <p class="text-muted mt-2">
+          These symptom patterns help <strong class="text-white">Dr. Priya Nair</strong> design
+          population-wide screening programs and allocate healthcare resources to the right patient segments.
+        </p>
+        <div class="alert mt-3" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);border-radius:10px;color:#C4B5FD;font-size:.9rem;">
+          🔬 <strong>Research Note:</strong> Patients reporting Chest Pain + Dizziness together show 3× higher stroke risk.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-card">
+          <h6>Symptom Prevalence Across Population</h6>
+          <canvas id="s5Chart" style="max-height:240px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 6: Conclusion -->
+  <div class="scene" style="background:linear-gradient(135deg,rgba(37,99,235,.12) 0%,rgba(16,185,129,.08) 100%);">
+    <div class="scene-num">Scene 6 — Actionable Insights &amp; Conclusion</div>
+    <h4 class="fw-700 text-white mb-4">Key Takeaways for Healthcare Decision-Making</h4>
+    <div class="row g-3">
+      {% set insights = [
+        ("🎯","Prioritize 61+ Age Group","Highest disease prevalence across all three conditions — focus early screening resources here."),
+        ("🏃","Promote Exercise Programs","Active patients show ~25% lower risk scores — exercise interventions yield measurable health improvements."),
+        ("🚭","Anti-Smoking Initiatives","Smokers face elevated risks across Heart Disease, Diabetes, and Stroke — cessation programs are critical."),
+        ("🩺","Multi-Marker Monitoring","Track BP + Cholesterol + Glucose together — combined elevation is a stronger predictor than any single marker."),
+        ("📊","Obese BMI Category","Obese patients show highest disease rates — weight management programs are key preventive interventions."),
+        ("⚡","Symptom-Based Screening","Chest Pain + Dizziness co-occurrence triples stroke risk — use symptom clusters for fast-track referrals.")
+      ] %}
+      {% for icon, title, desc in insights %}
+      <div class="col-md-4">
+        <div class="d-flex gap-3 align-items-start p-3" style="background:rgba(0,0,0,.2);border-radius:12px;">
+          <div style="font-size:1.6rem;flex-shrink:0;">{{ icon }}</div>
+          <div>
+            <div class="fw-600 text-white mb-1">{{ title }}</div>
+            <div class="text-muted small">{{ desc }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <hr class="divider mt-4"/>
+    <div class="text-center">
+      <h5 class="text-white mb-3">Explore Further</h5>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="/dashboard" class="btn" style="background:var(--primary);color:#fff;border-radius:8px;">
+          <i class="bi bi-grid-3x3-gap-fill me-2"></i>Full Dashboard
+        </a>
+        <a href="https://github.com/YashYK08/Yash-smart-healthcare-project" target="_blank"
+           class="btn" style="background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--border);border-radius:8px;">
+          <i class="bi bi-github me-2"></i>Source Code
+        </a>
+        <a href="https://public.tableau.com/app/profile/yash.kourav" target="_blank"
+           class="btn" style="background:#E97627;color:#fff;border-radius:8px;">
+          <i class="bi bi-bar-chart-fill me-2"></i>Tableau Workbook
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+fetch('/api/charts').then(r => r.json()).then(d => {
+  const {disease_by_age, exercise_risk, clinical, symptoms, risk_distribution} = d;
+  const COLORS = { heart:'rgba(248,113,113,', diabetes:'rgba(252,211,77,', stroke:'rgba(167,139,250,', accent:'rgba(16,185,129,' };
+
+  // S1 – Disease bar
+  new Chart(document.getElementById('s1Chart'), {
+    type: 'bar',
+    data: {
+      labels: ['Heart Disease','Diabetes','Stroke'],
+      datasets: [{
+        data: [{{ kpis.heart_disease_pct }}, {{ kpis.diabetes_pct }}, {{ kpis.stroke_pct }}],
+        backgroundColor: [COLORS.heart+'0.85)',COLORS.diabetes+'0.85)',COLORS.stroke+'0.85)'],
+        borderRadius: 8
+      }]
+    },
+    options: { responsive: true, plugins: { legend:{display:false} },
+      scales: { x:{ticks:{color:'#94A3B8'},grid:{color:'rgba(148,163,184,0.08)'}}, y:{ticks:{color:'#94A3B8'},grid:{color:'rgba(148,163,184,0.08)'}} } }
+  });
+
+  // S2 – Age group heart disease
+  new Chart(document.getElementById('s2Chart'), {
+    type: 'line',
+    data: {
+      labels: disease_by_age.age_group,
+      datasets: [
+        { label:'Heart Disease', data: disease_by_age.heart_disease, borderColor:COLORS.heart+'1)', backgroundColor:COLORS.heart+'0.15)', fill:true, tension:0.4, pointRadius:5 },
+        { label:'Diabetes', data: disease_by_age.diabetes, borderColor:COLORS.diabetes+'1)', backgroundColor:COLORS.diabetes+'0.1)', fill:true, tension:0.4, pointRadius:5 },
+        { label:'Stroke', data: disease_by_age.stroke, borderColor:COLORS.stroke+'1)', backgroundColor:COLORS.stroke+'0.1)', fill:true, tension:0.4, pointRadius:5 },
+      ]
+    },
+    options: { responsive:true, plugins:{ legend:{labels:{color:'#94A3B8',font:{family:'Inter',size:10}}} },
+      scales:{ x:{ticks:{color:'#94A3B8'},grid:{color:'rgba(148,163,184,0.08)'}}, y:{ticks:{color:'#94A3B8'},grid:{color:'rgba(148,163,184,0.08)'}} } }
+  });
+
+  // S3 – Exercise
+  new Chart(document.getElementById('s3Chart'), {
+    type: 'bar',
+    data: {
+      labels: exercise_risk.labels,
+      datasets: [{ label:'Avg Risk Score', data: exercise_risk.risk_scores,
+        backgroundColor: [COLORS.heart+'0.8)',COLORS.diabetes+'0.8)',COLORS.accent+'0.8)',COLORS.accent+'0.5)'],
+        borderRadius: 6 }]
+    },
+    options: { responsive:true, plugins:{legend:{display:false}},
+      scales:{ x:{ticks:{color:'#94A3B8'},grid:{color:'rgba(148,163,184,0.08)'}}, y:{ticks:{color:'#94A3B8'},grid:{color:'rgba(148,163,184,0.08)'}} } }
+  });
+
+  // S4 – Clinical radar
+  new Chart(document.getElementById('s4Chart'), {
+    type: 'radar',
+    data: {
+      labels: clinical.cols.map(c => c.replace('_',' ').replace(/\b\w/g,x=>x.toUpperCase())),
+      datasets: [
+        { label:'No Disease', data: clinical.no_disease, borderColor:COLORS.accent+'1)', backgroundColor:COLORS.accent+'0.1)', pointBackgroundColor:COLORS.accent+'1)' },
+        { label:'Heart Disease', data: clinical.with_disease, borderColor:COLORS.heart+'1)', backgroundColor:COLORS.heart+'0.1)', pointBackgroundColor:COLORS.heart+'1)' },
+      ]
+    },
+    options: { responsive:true, plugins:{legend:{labels:{color:'#94A3B8',font:{family:'Inter',size:10}}}},
+      scales:{ r:{ticks:{color:'#64748B',backdropColor:'transparent'}, grid:{color:'rgba(148,163,184,0.12)'}, pointLabels:{color:'#94A3B8',font:{family:'Inter',size:10}} } } }
+  });
+
+  // S5 – Symptoms polar area
+  new Chart(document.getElementById('s5Chart'), {
+    type: 'polarArea',
+    data: {
+      labels: symptoms.labels.map(l => l.replace('_',' ').replace(/\b\w/g,x=>x.toUpperCase())),
+      datasets: [{ data: symptoms.values,
+        backgroundColor:[COLORS.diabetes+'0.8)',COLORS.heart+'0.8)',COLORS.stroke+'0.8)'],
+        borderWidth:2,borderColor:'#1E293B' }]
+    },
+    options: { responsive:true, plugins:{legend:{labels:{color:'#94A3B8',font:{family:'Inter',size:11}}}},
+      scales:{ r:{ticks:{color:'#64748B',backdropColor:'transparent'}, grid:{color:'rgba(148,163,184,0.12)'} } } }
+  });
+});
+</script>
+{% endblock %}

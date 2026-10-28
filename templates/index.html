@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}Smart Healthcare – Home{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container position-relative">
+    <div class="badge-pill">🏥 Healthcare Analytics &middot; 5,000 Patients &middot; 16 Features</div>
+    <h1 class="text-white mb-3">
+      Smart Healthcare<br/>
+      <span style="color:var(--accent)">Chronic Disease</span> Risk Analysis
+    </h1>
+    <p>
+      Uncovering patterns in Heart Disease, Diabetes &amp; Stroke through interactive data
+      visualizations — empowering clinicians, analysts, and public health researchers.
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      <a href="/dashboard" class="btn btn-lg" style="background:var(--primary);color:#fff;border-radius:10px;font-weight:600;">
+        <i class="bi bi-grid-3x3-gap-fill me-2"></i>View Dashboard
+      </a>
+      <a href="/story" class="btn btn-lg" style="background:var(--accent);color:#fff;border-radius:10px;font-weight:600;">
+        <i class="bi bi-book-fill me-2"></i>Read Story
+      </a>
+      <a href="https://github.com/YashYK08/Yash-smart-healthcare-project" target="_blank"
+         class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:10px;font-weight:600;">
+        <i class="bi bi-github me-2"></i>GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- KPI STRIP -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-3">
+      <!-- Total Patients -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon text-primary"><i class="bi bi-people-fill"></i></div>
+          <div>
+            <div class="kpi-value text-white">{{ kpis.total_patients | int | string | replace(",","") }}</div>
+            <div class="kpi-label">Total Patients</div>
+          </div>
+        </div>
+      </div>
+      <!-- Heart Disease -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon" style="color:#F87171"><i class="bi bi-heart-pulse-fill"></i></div>
+          <div>
+            <div class="kpi-value text-danger-soft">{{ kpis.heart_disease_pct }}%</div>
+            <div class="kpi-label">Heart Disease</div>
+          </div>
+        </div>
+      </div>
+      <!-- Diabetes -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon" style="color:#FCD34D"><i class="bi bi-droplet-fill"></i></div>
+          <div>
+            <div class="kpi-value text-warning-soft">{{ kpis.diabetes_pct }}%</div>
+            <div class="kpi-label">Diabetes</div>
+          </div>
+        </div>
+      </div>
+      <!-- Stroke -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon" style="color:#A78BFA"><i class="bi bi-lightning-fill"></i></div>
+          <div>
+            <div class="kpi-value text-purple-soft">{{ kpis.stroke_pct }}%</div>
+            <div class="kpi-label">Stroke</div>
+          </div>
+        </div>
+      </div>
+      <!-- Avg Risk Score -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon text-warning"><i class="bi bi-shield-exclamation"></i></div>
+          <div>
+            <div class="kpi-value text-warning-soft">{{ kpis.avg_risk_score }}</div>
+            <div class="kpi-label">Avg Risk Score</div>
+          </div>
+        </div>
+      </div>
+      <!-- High-Risk Patients -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon" style="color:#F87171"><i class="bi bi-exclamation-triangle-fill"></i></div>
+          <div>
+            <div class="kpi-value text-danger-soft">{{ kpis.high_risk_count }}</div>
+            <div class="kpi-label">High-Risk (≥80)</div>
+          </div>
+        </div>
+      </div>
+      <!-- Avg BMI -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon text-accent"><i class="bi bi-person-fill"></i></div>
+          <div>
+            <div class="kpi-value text-accent">{{ kpis.avg_bmi }}</div>
+            <div class="kpi-label">Avg BMI</div>
+          </div>
+        </div>
+      </div>
+      <!-- Avg Age -->
+      <div class="col-6 col-md-3">
+        <div class="kpi-card d-flex align-items-center gap-3">
+          <div class="kpi-icon" style="color:#38BDF8"><i class="bi bi-calendar-heart-fill"></i></div>
+          <div>
+            <div class="kpi-value" style="color:#38BDF8">{{ kpis.avg_age }}</div>
+            <div class="kpi-label">Avg Age (yrs)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT LINKS -->
+<section class="py-2 pb-5">
+  <div class="container">
+    <h2 class="section-header text-center mb-4">
+      <i class="bi bi-link-45deg text-accent me-2"></i>Project Links
+    </h2>
+    <div class="row g-4 justify-content-center">
+      <!-- GitHub -->
+      <div class="col-12 col-md-4">
+        <a href="https://github.com/YashYK08/Yash-smart-healthcare-project" target="_blank" class="text-decoration-none">
+          <div class="link-card">
+            <div class="icon">🐙</div>
+            <h5 class="text-white fw-700 mb-2">GitHub Repository</h5>
+            <p class="text-muted small mb-3">Full source code, dataset, Flask app, documentation, and Tableau workbook.</p>
+            <span class="badge rounded-pill" style="background:var(--primary);color:#fff;padding:.4rem .9rem;">
+              <i class="bi bi-github me-1"></i>YashYK08 / Yash-smart-healthcare-project
+            </span>
+          </div>
+        </a>
+      </div>
+      <!-- Demo (Flask) -->
+      <div class="col-12 col-md-4">
+        <a href="http://127.0.0.1:5000/dashboard" target="_blank" class="text-decoration-none">
+          <div class="link-card">
+            <div class="icon">🚀</div>
+            <h5 class="text-white fw-700 mb-2">Live Demo</h5>
+            <p class="text-muted small mb-3">Interactive Flask dashboard with Chart.js visualizations, KPIs, and story scenes.</p>
+            <span class="badge rounded-pill" style="background:var(--accent);color:#fff;padding:.4rem .9rem;">
+              <i class="bi bi-play-circle-fill me-1"></i>Open Dashboard
+            </span>
+          </div>
+        </a>
+      </div>
+      <!-- Tableau Public -->
+      <div class="col-12 col-md-4">
+        <a href="https://public.tableau.com/app/profile/yash.kourav" target="_blank" class="text-decoration-none">
+          <div class="link-card">
+            <div class="icon">📊</div>
+            <h5 class="text-white fw-700 mb-2">Tableau Dashboard</h5>
+            <p class="text-muted small mb-3">Published Tableau Public workbook with interactive charts, heatmaps, and story.</p>
+            <span class="badge rounded-pill" style="background:#E97627;color:#fff;padding:.4rem .9rem;">
+              <i class="bi bi-bar-chart-fill me-1"></i>View on Tableau Public
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="py-5" style="background:rgba(30,41,59,.5);">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-md-6">
+        <h2 class="fw-800 mb-3">About the Project</h2>
+        <p class="text-muted">
+          This project tackles the growing challenge of chronic disease identification in healthcare.
+          By analyzing <strong class="text-white">5,000 patient records</strong> covering demographics,
+          clinical indicators, and lifestyle behaviors, we surface hidden risk patterns and enable
+          data-driven decisions for healthcare professionals.
+        </p>
+        <div class="mt-4 d-flex flex-wrap gap-2">
+          {% for tag in ["Heart Disease","Diabetes","Stroke","BMI Analysis","Risk Scoring","Flask","Chart.js","Tableau","Python","Pandas"] %}
+          <span class="badge rounded-pill" style="background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.4);color:#93C5FD;padding:.4rem .8rem;">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row g-3">
+          {% set scenarios = [
+            ("🩺","Dr. Michael Carter","Clinical Risk Assessment Officer","Identifies high-risk patients using KPI dashboards."),
+            ("📈","Emily Rodriguez","Healthcare Data Analyst","Uncovers lifestyle-disease correlations."),
+            ("🔬","Dr. Priya Nair","Public Health Researcher","Studies population-wide disease patterns.")
+          ] %}
+          {% for icon, name, role, desc in scenarios %}
+          <div class="col-12">
+            <div class="chart-card d-flex gap-3 align-items-start">
+              <div style="font-size:1.8rem">{{ icon }}</div>
+              <div>
+                <div class="fw-700 text-white">{{ name }}</div>
+                <div class="text-accent small mb-1">{{ role }}</div>
+                <div class="text-muted small">{{ desc }}</div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

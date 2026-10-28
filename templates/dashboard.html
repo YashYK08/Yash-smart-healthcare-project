@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – Smart Healthcare{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <!-- Header -->
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <div>
+      <div class="badge-pill mb-2">📊 Interactive Dashboard</div>
+      <h1 class="fw-800 fs-3 mb-0 text-white">Chronic Disease Risk Dashboard</h1>
+      <p class="text-muted mt-1 mb-0">5,000 patients · 16 clinical &amp; lifestyle features · Real-time charts</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="https://github.com/YashYK08/Yash-smart-healthcare-project" target="_blank"
+         class="btn btn-sm" style="background:rgba(255,255,255,.08);color:var(--text-main);border:1px solid var(--border);border-radius:8px;">
+        <i class="bi bi-github me-1"></i>GitHub
+      </a>
+      <a href="https://public.tableau.com/app/profile/yash.kourav" target="_blank"
+         class="btn btn-sm" style="background:#E97627;color:#fff;border-radius:8px;">
+        <i class="bi bi-bar-chart-fill me-1"></i>Tableau
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="row g-3 mb-4">
+    {% set kpi_items = [
+      ("bi-people-fill","text-primary",kpis.total_patients|int,"Total Patients",""),
+      ("bi-heart-pulse-fill","text-danger-soft",kpis.heart_disease_pct,"Heart Disease","%"),
+      ("bi-droplet-fill","text-warning-soft",kpis.diabetes_pct,"Diabetes","%"),
+      ("bi-lightning-fill","text-purple-soft",kpis.stroke_pct,"Stroke","%"),
+      ("bi-shield-exclamation","text-warning",kpis.avg_risk_score,"Avg Risk Score",""),
+      ("bi-exclamation-triangle-fill","text-danger-soft",kpis.high_risk_count,"High-Risk ≥80","")
+    ] %}
+    {% for icon, cls, val, label, suffix in kpi_items %}
+    <div class="col-6 col-md-2">
+      <div class="kpi-card text-center py-3">
+        <i class="bi {{ icon }} {{ cls }}" style="font-size:1.5rem"></i>
+        <div class="kpi-value {{ cls }} mt-1" style="font-size:1.5rem">{{ val }}{{ suffix }}</div>
+        <div class="kpi-label">{{ label }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- CHARTS ROW 1: Disease by Age Group & BMI -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="chart-card">
+        <h6><i class="bi bi-bar-chart-fill me-2"></i>Disease Prevalence by Age Group (%)</h6>
+        <canvas id="ageChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-card">
+        <h6><i class="bi bi-bar-chart-steps me-2"></i>Disease Prevalence by BMI Category (%)</h6>
+        <canvas id="bmiChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2: Lifestyle & Exercise -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="chart-card">
+        <h6><i class="bi bi-activity me-2"></i>Smoking vs Disease Rates (%)</h6>
+        <canvas id="smokingChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-card">
+        <h6><i class="bi bi-cup-hot-fill me-2"></i>Alcohol vs Disease Rates (%)</h6>
+        <canvas id="alcoholChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 3 -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="chart-card">
+        <h6><i class="bi bi-graph-down-arrow me-2"></i>Exercise Level vs Avg Risk Score</h6>
+        <canvas id="exerciseChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="chart-card">
+        <h6><i class="bi bi-pie-chart-fill me-2"></i>Symptom Prevalence (%)</h6>
+        <canvas id="symptomChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="chart-card">
+        <h6><i class="bi bi-bar-chart-line-fill me-2"></i>Risk Score Distribution</h6>
+        <canvas id="riskDistChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 4 -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="chart-card">
+        <h6><i class="bi bi-gender-ambiguous me-2"></i>Disease by Gender (%)</h6>
+        <canvas id="genderChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-card">
+        <h6><i class="bi bi-clipboard2-pulse-fill me-2"></i>Clinical Indicators vs Heart Disease</h6>
+        <canvas id="clinicalChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scatter plot -->
+  <div class="row g-4 mb-5">
+    <div class="col-12">
+      <div class="chart-card">
+        <h6><i class="bi bi-scatter-chart me-2 d-none"></i><i class="bi bi-dot me-2"></i>Age vs Health Risk Score (sample 500 patients)</h6>
+        <canvas id="scatterChart" style="max-height:320px;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableau Embed Placeholder -->
+  <div class="chart-card mb-5">
+    <h6><i class="bi bi-bar-chart-fill me-2"></i>Tableau Public Dashboard Embed</h6>
+    <div style="background:rgba(0,0,0,.2);border-radius:10px;padding:3rem;text-align:center;color:var(--text-muted);">
+      <i class="bi bi-bar-chart-fill" style="font-size:3rem;color:#E97627;"></i>
+      <h5 class="text-white mt-3 mb-2">Tableau Dashboard</h5>
+      <p class="mb-3">After publishing your workbook to Tableau Public, replace this block with the embed code.</p>
+      <a href="https://public.tableau.com/app/profile/yash.kourav" target="_blank"
+         class="btn" style="background:#E97627;color:#fff;border-radius:8px;">
+        <i class="bi bi-box-arrow-up-right me-2"></i>Open on Tableau Public
+      </a>
+      <div class="mt-4 text-start" style="background:rgba(255,255,255,.05);border-radius:8px;padding:1rem;">
+        <code style="font-size:.78rem;color:#94A3B8;">
+          &lt;!-- Paste Tableau embed code here --&gt;<br/>
+          &lt;div class='tableauPlaceholder'&gt;...&lt;/div&gt;
+        </code>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const COLORS = {
+  heart: 'rgba(248,113,113,',
+  diabetes: 'rgba(252,211,77,',
+  stroke: 'rgba(167,139,250,',
+  accent: 'rgba(16,185,129,',
+  blue: 'rgba(96,165,250,',
+};
+const mkBg = (base, a) => base + a + ')';
+const CHART_DEFAULTS = {
+  plugins: { legend: { labels: { color: '#94A3B8', font: { family: 'Inter', size: 11 } } } },
+  scales: {
+    x: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+    y: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } }
+  }
+};
+
+fetch('/api/charts').then(r => r.json()).then(d => {
+  const {disease_by_age, disease_by_bmi, lifestyle, exercise_risk, symptoms, risk_distribution, gender_disease, scatter, clinical} = d;
+
+  // 1. Disease by Age
+  new Chart(document.getElementById('ageChart'), {
+    type: 'bar',
+    data: {
+      labels: disease_by_age.age_group,
+      datasets: [
+        { label:'Heart Disease', data: disease_by_age.heart_disease, backgroundColor: mkBg(COLORS.heart,'0.8'), borderRadius: 6 },
+        { label:'Diabetes', data: disease_by_age.diabetes, backgroundColor: mkBg(COLORS.diabetes,'0.8'), borderRadius: 6 },
+        { label:'Stroke', data: disease_by_age.stroke, backgroundColor: mkBg(COLORS.stroke,'0.8'), borderRadius: 6 },
+      ]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true }
+  });
+
+  // 2. Disease by BMI
+  new Chart(document.getElementById('bmiChart'), {
+    type: 'bar',
+    data: {
+      labels: disease_by_bmi.bmi_category,
+      datasets: [
+        { label:'Heart Disease', data: disease_by_bmi.heart_disease, backgroundColor: mkBg(COLORS.heart,'0.8'), borderRadius: 6 },
+        { label:'Diabetes', data: disease_by_bmi.diabetes, backgroundColor: mkBg(COLORS.diabetes,'0.8'), borderRadius: 6 },
+        { label:'Stroke', data: disease_by_bmi.stroke, backgroundColor: mkBg(COLORS.stroke,'0.8'), borderRadius: 6 },
+      ]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true }
+  });
+
+  // 3. Smoking
+  const sm = lifestyle['Smoking'];
+  new Chart(document.getElementById('smokingChart'), {
+    type: 'bar',
+    data: {
+      labels: sm.labels,
+      datasets: [
+        { label:'Heart Disease', data: sm.heart_disease, backgroundColor: mkBg(COLORS.heart,'0.85'), borderRadius: 6 },
+        { label:'Diabetes', data: sm.diabetes, backgroundColor: mkBg(COLORS.diabetes,'0.85'), borderRadius: 6 },
+        { label:'Stroke', data: sm.stroke, backgroundColor: mkBg(COLORS.stroke,'0.85'), borderRadius: 6 },
+      ]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true }
+  });
+
+  // 4. Alcohol
+  const al = lifestyle['Alcohol'];
+  new Chart(document.getElementById('alcoholChart'), {
+    type: 'bar',
+    data: {
+      labels: al.labels,
+      datasets: [
+        { label:'Heart Disease', data: al.heart_disease, backgroundColor: mkBg(COLORS.heart,'0.85'), borderRadius: 6 },
+        { label:'Diabetes', data: al.diabetes, backgroundColor: mkBg(COLORS.diabetes,'0.85'), borderRadius: 6 },
+        { label:'Stroke', data: al.stroke, backgroundColor: mkBg(COLORS.stroke,'0.85'), borderRadius: 6 },
+      ]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true }
+  });
+
+  // 5. Exercise vs Risk (line)
+  new Chart(document.getElementById('exerciseChart'), {
+    type: 'line',
+    data: {
+      labels: exercise_risk.labels,
+      datasets: [{ label:'Avg Risk Score', data: exercise_risk.risk_scores,
+        borderColor: mkBg(COLORS.accent,'1'), backgroundColor: mkBg(COLORS.accent,'0.15'),
+        fill: true, tension: 0.4, pointRadius: 6, pointBackgroundColor: mkBg(COLORS.accent,'1') }]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true }
+  });
+
+  // 6. Symptoms (doughnut)
+  new Chart(document.getElementById('symptomChart'), {
+    type: 'doughnut',
+    data: {
+      labels: symptoms.labels,
+      datasets: [{ data: symptoms.values,
+        backgroundColor: [mkBg(COLORS.heart,'0.85'), mkBg(COLORS.diabetes,'0.85'), mkBg(COLORS.stroke,'0.85')],
+        borderWidth: 2, borderColor: '#1E293B' }]
+    },
+    options: { responsive: true, plugins: { legend: { labels: { color: '#94A3B8', font: { family: 'Inter', size: 11 } } } } }
+  });
+
+  // 7. Risk Distribution
+  new Chart(document.getElementById('riskDistChart'), {
+    type: 'bar',
+    data: {
+      labels: risk_distribution.labels,
+      datasets: [{ label:'Patients', data: risk_distribution.values,
+        backgroundColor: [mkBg(COLORS.accent,'0.8'), mkBg(COLORS.blue,'0.8'), mkBg(COLORS.diabetes,'0.8'), mkBg(COLORS.stroke,'0.8'), mkBg(COLORS.heart,'0.8')],
+        borderRadius: 6 }]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true, plugins: { legend: { display: false } } }
+  });
+
+  // 8. Gender chart
+  new Chart(document.getElementById('genderChart'), {
+    type: 'bar',
+    data: {
+      labels: gender_disease.gender,
+      datasets: [
+        { label:'Heart Disease', data: gender_disease.heart_disease, backgroundColor: mkBg(COLORS.heart,'0.85'), borderRadius: 6 },
+        { label:'Diabetes', data: gender_disease.diabetes, backgroundColor: mkBg(COLORS.diabetes,'0.85'), borderRadius: 6 },
+        { label:'Stroke', data: gender_disease.stroke, backgroundColor: mkBg(COLORS.stroke,'0.85'), borderRadius: 6 },
+      ]
+    },
+    options: { ...CHART_DEFAULTS, responsive: true }
+  });
+
+  // 9. Clinical radar
+  new Chart(document.getElementById('clinicalChart'), {
+    type: 'radar',
+    data: {
+      labels: clinical.cols.map(c => c.replace('_',' ').replace(/\b\w/g,x=>x.toUpperCase())),
+      datasets: [
+        { label:'No Heart Disease', data: clinical.no_disease, borderColor: mkBg(COLORS.accent,'1'), backgroundColor: mkBg(COLORS.accent,'0.12'), pointBackgroundColor: mkBg(COLORS.accent,'1') },
+        { label:'With Heart Disease', data: clinical.with_disease, borderColor: mkBg(COLORS.heart,'1'), backgroundColor: mkBg(COLORS.heart,'0.12'), pointBackgroundColor: mkBg(COLORS.heart,'1') },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#94A3B8', font: { family: 'Inter', size: 11 } } } },
+      scales: { r: { ticks: { color: '#64748B', backdropColor: 'transparent' }, grid: { color: 'rgba(148,163,184,0.15)' }, pointLabels: { color: '#94A3B8', font: { family: 'Inter', size: 11 } } } }
+    }
+  });
+
+  // 10. Age vs Risk scatter
+  const diseaseColors = scatter.disease.map(d => d ? mkBg(COLORS.heart,'0.75') : mkBg(COLORS.accent,'0.55'));
+  new Chart(document.getElementById('scatterChart'), {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: 'Patients',
+        data: scatter.age.map((a,i) => ({x: a, y: scatter.risk[i]})),
+        backgroundColor: diseaseColors,
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `Age: ${ctx.parsed.x} | Risk: ${ctx.parsed.y}` } }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Age', color: '#94A3B8' }, ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+        y: { title: { display: true, text: 'Health Risk Score', color: '#94A3B8' }, ticks: { color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+      }
+    }
+  });
+});
+</script>
+{% endblock %}

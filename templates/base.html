@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Smart Healthcare{% endblock %}</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1d4ed8;
+      --accent: #10B981;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      --purple: #8B5CF6;
+      --bg-dark: #0F172A;
+      --bg-card: #1E293B;
+      --bg-card2: #273549;
+      --text-main: #F1F5F9;
+      --text-muted: #94A3B8;
+      --border: rgba(148,163,184,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+    /* ── NAVBAR ── */
+    .navbar-brand span { color: var(--accent); }
+    .navbar {
+      background: rgba(15,23,42,0.97) !important;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-link { color: var(--text-muted) !important; font-weight: 500; transition: color .2s; }
+    .nav-link:hover, .nav-link.active { color: var(--text-main) !important; }
+    .nav-link.active { border-bottom: 2px solid var(--accent); }
+    /* ── KPI CARDS ── */
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.35); }
+    .kpi-value { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+    .kpi-label { font-size: .8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+    .kpi-icon { font-size: 2rem; opacity: .85; }
+    /* ── CHART CARDS ── */
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .chart-card h6 {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    canvas { max-height: 280px; }
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0F172A 0%, #1e2f4a 50%, #0F172A 100%);
+      padding: 5rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,.18) 0%, transparent 70%);
+    }
+    .hero h1 { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; letter-spacing: -1.5px; }
+    .hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 1rem auto; }
+    .badge-pill {
+      display: inline-block;
+      background: rgba(37,99,235,.2);
+      border: 1px solid rgba(37,99,235,.4);
+      color: #60A5FA;
+      padding: .3rem .9rem;
+      border-radius: 99px;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    /* ── STORY SCENES ── */
+    .scene {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .scene-num {
+      position: absolute;
+      top: -16px; left: 2rem;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: .85rem;
+      padding: .3rem .9rem;
+      border-radius: 99px;
+    }
+    /* ── LINKS SECTION ── */
+    .link-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .link-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .link-card .icon { font-size: 2.8rem; margin-bottom: .8rem; }
+    /* ── TABLE ── */
+    .table-dark { --bs-table-bg: var(--bg-card); border-color: var(--border); }
+    /* ── FOOTER ── */
+    footer { background: rgba(15,23,42,.95); border-top: 1px solid var(--border); padding: 2rem 0; color: var(--text-muted); font-size: .85rem; }
+    /* ── UTILS ── */
+    .text-accent { color: var(--accent) !important; }
+    .text-danger-soft { color: #F87171 !important; }
+    .text-warning-soft { color: #FCD34D !important; }
+    .text-purple-soft { color: #A78BFA !important; }
+    .section-header { font-size: 1.35rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .divider { border-color: var(--border); margin: 2.5rem 0; }
+    @media(max-width:576px) { .kpi-value { font-size: 1.6rem; } }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-800 text-white fs-5" href="/">
+      <i class="bi bi-heart-pulse-fill text-danger me-2"></i>Smart<span>Health</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link {% if request.endpoint=='index' %}active{% endif %}" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.endpoint=='dashboard' %}active{% endif %}" href="/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.endpoint=='story' %}active{% endif %}" href="/story">Story</a></li>
+        <li class="nav-item ms-2">
+          <a class="btn btn-sm" style="background:var(--primary);color:#fff;border-radius:8px;padding:.35rem .9rem;"
+             href="https://github.com/YashYK08/Yash-smart-healthcare-project" target="_blank">
+            <i class="bi bi-github me-1"></i>GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<!-- FOOTER -->
+<footer>
+  <div class="container text-center">
+    <p class="mb-1">
+      <i class="bi bi-heart-pulse-fill text-danger me-1"></i>
+      <strong class="text-white">Smart Healthcare – Chronic Disease Risk Analysis</strong>
+    </p>
+    <p class="mb-2">Built with Flask · Chart.js · Python · Bootstrap 5 &nbsp;|&nbsp; Dataset: 5,000 Patients</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="https://github.com/YashYK08/Yash-smart-healthcare-project" target="_blank" class="text-muted text-decoration-none">
+        <i class="bi bi-github me-1"></i>GitHub Repository
+      </a>
+      <span class="text-muted">·</span>
+      <a href="https://public.tableau.com" target="_blank" class="text-muted text-decoration-none">
+        <i class="bi bi-bar-chart-fill me-1"></i>Tableau Public
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
