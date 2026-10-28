@@ -1,0 +1,478 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<workbook source-build='2024.1.0' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <preferences>
+    <color-palette name='Healthcare' type='regular'>
+      <color>#E07B54</color>
+      <color>#C9A96E</color>
+      <color>#8B7355</color>
+      <color>#6B8E6B</color>
+      <color>#5B7FA6</color>
+      <color>#9B6B9B</color>
+      <color>#C85250</color>
+    </color-palette>
+  </preferences>
+  <datasources>
+    <datasource caption='smart_healthcare_dataset' inline='true' name='federated.1abc2def' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='smart_healthcare_dataset' name='textscan.1abc2def'>
+            <connection class='textscan' filename='smart_healthcare_dataset.csv'>
+              <relation name='smart_healthcare_dataset' table='[smart_healthcare_dataset#csv]' type='table'>
+                <columns header='yes' separator=','>
+                  <column datatype='integer' name='age' />
+                  <column datatype='string' name='gender' />
+                  <column datatype='real' name='bmi' />
+                  <column datatype='integer' name='exercise_level' />
+                  <column datatype='integer' name='smoking' />
+                  <column datatype='integer' name='alcohol' />
+                  <column datatype='integer' name='blood_pressure' />
+                  <column datatype='integer' name='cholesterol' />
+                  <column datatype='integer' name='glucose' />
+                  <column datatype='integer' name='fatigue' />
+                  <column datatype='integer' name='chest_pain' />
+                  <column datatype='integer' name='dizziness' />
+                  <column datatype='integer' name='heart_disease' />
+                  <column datatype='integer' name='diabetes' />
+                  <column datatype='integer' name='stroke' />
+                  <column datatype='real' name='health_risk_score' />
+                </columns>
+              </relation>
+            </connection>
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.1abc2def' name='smart_healthcare_dataset' table='[smart_healthcare_dataset#csv]' type='table' />
+      </connection>
+
+      <!-- Raw columns -->
+      <column datatype='integer' name='[age]' role='measure' type='quantitative' />
+      <column datatype='string' name='[gender]' role='dimension' type='nominal' />
+      <column datatype='real' name='[bmi]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[exercise_level]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[smoking]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[alcohol]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[blood_pressure]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[cholesterol]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[glucose]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[fatigue]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[chest_pain]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[dizziness]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[heart_disease]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[diabetes]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[stroke]' role='measure' type='quantitative' />
+      <column datatype='real' name='[health_risk_score]' role='measure' type='quantitative' />
+
+      <!-- Calculated Fields -->
+      <column caption='Age Group' datatype='string' name='[Age Group]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [age] &gt;= 18 AND [age] &lt;= 30 THEN &quot;Teenager&quot;&#10;ELSEIF [age] &lt;= 40 THEN &quot;Young Adult&quot;&#10;ELSEIF [age] &lt;= 50 THEN &quot;Adult&quot;&#10;ELSEIF [age] &lt;= 60 THEN &quot;Middle Age&quot;&#10;ELSEIF [age] &lt;= 70 THEN &quot;Senior&quot;&#10;ELSE &quot;Old&quot;&#10;END' />
+      </column>
+
+      <column caption='BMI Category' datatype='string' name='[BMI Category]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [bmi] &lt; 18.5 THEN &quot;Underweight&quot;&#10;ELSEIF [bmi] &lt; 25 THEN &quot;Normal&quot;&#10;ELSEIF [bmi] &lt; 30 THEN &quot;Overweight&quot;&#10;ELSE &quot;Obese&quot;&#10;END' />
+      </column>
+
+      <column caption='Exercise Level Category' datatype='string' name='[Exercise Level Category]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [exercise_level] = 0 THEN &quot;Sedentary&quot;&#10;ELSEIF [exercise_level] = 1 THEN &quot;Moderate&quot;&#10;ELSE &quot;Active&quot;&#10;END' />
+      </column>
+
+      <column caption='Heart Disease Rate' datatype='real' name='[Heart Disease Rate]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='AVG([heart_disease])' />
+      </column>
+
+      <column caption='Smoking Label' datatype='string' name='[Smoking Label]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [smoking] = 1 THEN &quot;Smoker&quot; ELSE &quot;Non-Smoker&quot; END' />
+      </column>
+
+      <column caption='Alcohol Label' datatype='string' name='[Alcohol Label]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [alcohol] = 1 THEN &quot;Drinks Alcohol&quot; ELSE &quot;No Alcohol&quot; END' />
+      </column>
+
+      <column caption='Count of Patients' datatype='integer' name='[Count of Patients]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='COUNT([age])' />
+      </column>
+
+      <column caption='Fatigue Condition' datatype='string' name='[Fatigue Condition]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [fatigue] = 1 THEN &quot;Fatigued&quot; ELSE &quot;Not Fatigued&quot; END' />
+      </column>
+
+      <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+      <column-instance column='[BMI Category]' derivation='None' name='[none:BMI Category:nk]' pivot='key' type='nominal' />
+      <column-instance column='[Exercise Level Category]' derivation='None' name='[none:Exercise Level Category:nk]' pivot='key' type='nominal' />
+      <column-instance column='[heart_disease]' derivation='Sum' name='[sum:heart_disease:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[diabetes]' derivation='Sum' name='[sum:diabetes:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[stroke]' derivation='Sum' name='[sum:stroke:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[blood_pressure]' derivation='Avg' name='[avg:blood_pressure:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[heart_disease]' derivation='Avg' name='[avg:heart_disease:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[diabetes]' derivation='Avg' name='[avg:diabetes:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[fatigue]' derivation='None' name='[none:fatigue:nk]' pivot='key' type='quantitative' />
+      <column-instance column='[age]' derivation='Count' name='[cnt:age:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[smoking]' derivation='Sum' name='[sum:smoking:ok]' pivot='key' type='quantitative' />
+      <column-instance column='[alcohol]' derivation='Sum' name='[sum:alcohol:ok]' pivot='key' type='quantitative' />
+    </datasource>
+  </datasources>
+
+  <worksheets>
+
+    <!-- SHEET 1: KPI Overview -->
+    <worksheet name='KPI Overview'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[heart_disease]' derivation='Sum' name='[sum:heart_disease:ok]' pivot='key' type='quantitative' />
+            <column-instance column='[diabetes]' derivation='Sum' name='[sum:diabetes:ok]' pivot='key' type='quantitative' />
+            <column-instance column='[stroke]' derivation='Sum' name='[sum:stroke:ok]' pivot='key' type='quantitative' />
+            <column-instance column='[age]' derivation='Count' name='[cnt:age:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='text' />
+          </style-rule>
+        </style>
+        <rows>[cnt:age:ok]</rows>
+        <cols>[sum:heart_disease:ok], [sum:diabetes:ok], [sum:stroke:ok]</cols>
+      </table>
+    </worksheet>
+
+    <!-- SHEET 2: Average Blood Pressure Across Age Groups -->
+    <worksheet name='Average Blood Pressure Across Age Groups'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[blood_pressure]' derivation='Avg' name='[avg:blood_pressure:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[none:Age Group:nk]'>
+            <groupfilter function='union' user:op='include'>
+              <groupfilter function='member' level='[none:Age Group:nk]' member='Adult' />
+              <groupfilter function='member' level='[none:Age Group:nk]' member='Middle Age' />
+              <groupfilter function='member' level='[none:Age Group:nk]' member='Old' />
+              <groupfilter function='member' level='[none:Age Group:nk]' member='Senior' />
+              <groupfilter function='member' level='[none:Age Group:nk]' member='Teenager' />
+              <groupfilter function='member' level='[none:Age Group:nk]' member='Young Adult' />
+            </groupfilter>
+          </filter>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='bar' />
+            <encoding attr='color' field='[federated.1abc2def].[none:Age Group:nk]' type='palette' />
+            <encoding attr='label' field='[federated.1abc2def].[avg:blood_pressure:ok]' type='text' />
+          </style-rule>
+        </style>
+        <rows>[avg:blood_pressure:ok]</rows>
+        <cols>[none:Age Group:nk]</cols>
+      </table>
+    </worksheet>
+
+    <!-- SHEET 3: Alcohol and Smoking Consumption Across Age Groups -->
+    <worksheet name='Alcohol and Smoking Consumption Across Age Groups'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[smoking]' derivation='Sum' name='[sum:smoking:ok]' pivot='key' type='quantitative' />
+            <column-instance column='[alcohol]' derivation='Sum' name='[sum:alcohol:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='bar' />
+          </style-rule>
+        </style>
+        <rows>[sum:smoking:ok], [sum:alcohol:ok]</rows>
+        <cols>[none:Age Group:nk]</cols>
+      </table>
+    </worksheet>
+
+    <!-- SHEET 4: Exercise Level Distribution (Donut/Pie) -->
+    <worksheet name='Exercise Level Distribution'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[Exercise Level Category]' derivation='None' name='[none:Exercise Level Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[age]' derivation='Count' name='[cnt:age:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='pie' />
+            <encoding attr='color' field='[federated.1abc2def].[none:Exercise Level Category:nk]' type='palette' />
+            <encoding attr='size' field='[federated.1abc2def].[cnt:age:ok]' type='size' />
+            <encoding attr='label' field='[federated.1abc2def].[none:Exercise Level Category:nk]' type='text' />
+          </style-rule>
+        </style>
+        <rows />
+        <cols />
+      </table>
+    </worksheet>
+
+    <!-- SHEET 5: Patient Distribution By Age Group (Pie) -->
+    <worksheet name='Patient Distribution By Age Group'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[age]' derivation='Count' name='[cnt:age:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='pie' />
+            <encoding attr='color' field='[federated.1abc2def].[none:Age Group:nk]' type='palette' />
+            <encoding attr='size' field='[federated.1abc2def].[cnt:age:ok]' type='size' />
+            <encoding attr='label' field='[federated.1abc2def].[none:Age Group:nk]' type='text' />
+          </style-rule>
+        </style>
+        <rows />
+        <cols />
+      </table>
+    </worksheet>
+
+    <!-- SHEET 6: Heart Disease vs Diabetes Prevalence by BMI Category -->
+    <worksheet name='Heart Disease vs Diabetes Prevalence'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[BMI Category]' derivation='None' name='[none:BMI Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[heart_disease]' derivation='Avg' name='[avg:heart_disease:ok]' pivot='key' type='quantitative' />
+            <column-instance column='[diabetes]' derivation='Avg' name='[avg:diabetes:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='bar' />
+            <encoding attr='label' field='[federated.1abc2def].[avg:heart_disease:ok]' type='text' />
+          </style-rule>
+        </style>
+        <rows>[avg:heart_disease:ok], [avg:diabetes:ok]</rows>
+        <cols>[none:BMI Category:nk]</cols>
+      </table>
+    </worksheet>
+
+    <!-- SHEET 7: BMI Category vs Heart Disease Rate -->
+    <worksheet name='BMI Category vs Heart Disease Rate'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[BMI Category]' derivation='None' name='[none:BMI Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[heart_disease]' derivation='Avg' name='[avg:heart_disease:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='bar' />
+            <encoding attr='color' field='[federated.1abc2def].[none:BMI Category:nk]' type='palette' />
+            <encoding attr='label' field='[federated.1abc2def].[avg:heart_disease:ok]' type='text' />
+          </style-rule>
+        </style>
+        <rows>[avg:heart_disease:ok]</rows>
+        <cols>[none:BMI Category:nk]</cols>
+      </table>
+    </worksheet>
+
+    <!-- SHEET 8: Heart Disease by BMI Category and Exercise Level (Heatmap) -->
+    <worksheet name='Heart Disease by BMI Category and Exercise Level'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[BMI Category]' derivation='None' name='[none:BMI Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Exercise Level Category]' derivation='None' name='[none:Exercise Level Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[heart_disease]' derivation='Avg' name='[avg:heart_disease:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='square' />
+            <encoding attr='color' field='[federated.1abc2def].[avg:heart_disease:ok]' type='palette' palette='orange-blue-diverging' />
+            <encoding attr='label' field='[federated.1abc2def].[avg:heart_disease:ok]' type='text' />
+          </style-rule>
+        </style>
+        <rows>[none:BMI Category:nk]</rows>
+        <cols>[none:Exercise Level Category:nk]</cols>
+      </table>
+    </worksheet>
+
+    <!-- SHEET 9: Age Group Distribution by Fatigue Condition -->
+    <worksheet name='Age Group Distribution by Fatigue Condition'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='smart_healthcare_dataset' name='federated.1abc2def' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1abc2def'>
+            <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Fatigue Condition]' derivation='None' name='[none:Fatigue Condition:nk]' pivot='key' type='nominal' />
+            <column-instance column='[age]' derivation='Count' name='[cnt:age:ok]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='type' field='[all]' type='bar' />
+            <encoding attr='color' field='[federated.1abc2def].[none:Fatigue Condition:nk]' type='palette' />
+            <encoding attr='label' field='[federated.1abc2def].[cnt:age:ok]' type='text' />
+          </style-rule>
+        </style>
+        <rows>[none:Age Group:nk]</rows>
+        <cols>[cnt:age:ok]</cols>
+      </table>
+    </worksheet>
+
+  </worksheets>
+
+  <dashboards>
+    <dashboard name='Smart Healthcare &amp; Risk Factor Analysis Dashboard'>
+      <size maxheight='900' maxwidth='1200' minheight='900' minwidth='1200' />
+      <zones>
+        <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='100000' id='2' type='layout-flow' w='100000' x='0' y='0'>
+            <!-- Top row: KPI -->
+            <zone h='12000' id='3' name='KPI Overview' type='worksheet' w='100000' x='0' y='0' />
+            <!-- Second row: BP chart + Alcohol/Smoking -->
+            <zone h='25000' id='4' type='layout-flow' w='100000' x='0' y='12000'>
+              <zone h='25000' id='5' name='Average Blood Pressure Across Age Groups' type='worksheet' w='50000' x='0' y='12000' />
+              <zone h='25000' id='6' name='Alcohol and Smoking Consumption Across Age Groups' type='worksheet' w='50000' x='50000' y='12000' />
+            </zone>
+            <!-- Third row: Donut + Pie + BMI Heart Disease -->
+            <zone h='25000' id='7' type='layout-flow' w='100000' x='0' y='37000'>
+              <zone h='25000' id='8' name='Exercise Level Distribution' type='worksheet' w='25000' x='0' y='37000' />
+              <zone h='25000' id='9' name='Patient Distribution By Age Group' type='worksheet' w='25000' x='25000' y='37000' />
+              <zone h='25000' id='10' name='Heart Disease vs Diabetes Prevalence' type='worksheet' w='50000' x='50000' y='37000' />
+            </zone>
+            <!-- Fourth row: BMI rate + Heatmap + Fatigue -->
+            <zone h='26000' id='11' type='layout-flow' w='100000' x='0' y='62000'>
+              <zone h='26000' id='12' name='BMI Category vs Heart Disease Rate' type='worksheet' w='33333' x='0' y='62000' />
+              <zone h='26000' id='13' name='Heart Disease by BMI Category and Exercise Level' type='worksheet' w='33333' x='33333' y='62000' />
+              <zone h='26000' id='14' name='Age Group Distribution by Fatigue Condition' type='worksheet' w='33334' x='66666' y='62000' />
+            </zone>
+          </zone>
+        </zone>
+      </zones>
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
+              <zone h='100000' id='2' type='layout-flow' w='100000' x='0' y='0'>
+                <zone h='14000' id='3' name='KPI Overview' type='worksheet' w='100000' x='0' y='0' />
+                <zone h='26000' id='5' name='Average Blood Pressure Across Age Groups' type='worksheet' w='100000' x='0' y='14000' />
+                <zone h='26000' id='6' name='Alcohol and Smoking Consumption Across Age Groups' type='worksheet' w='100000' x='0' y='40000' />
+                <zone h='26000' id='8' name='Exercise Level Distribution' type='worksheet' w='50000' x='0' y='66000' />
+                <zone h='26000' id='9' name='Patient Distribution By Age Group' type='worksheet' w='50000' x='50000' y='66000' />
+              </zone>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <actions>
+        <action caption='Filter 1' name='filter-action-1'>
+          <source-sheet>BMI Category vs Heart Disease Rate</source-sheet>
+          <target-sheet>Heart Disease vs Diabetes Prevalence</target-sheet>
+          <action-type>filter</action-type>
+          <run-on-select>true</run-on-select>
+          <run-on-deselect>true</run-on-deselect>
+          <deselect-action>unfilter</deselect-action>
+        </action>
+        <action caption='Filter 2' name='filter-action-2'>
+          <source-sheet>Patient Distribution By Age Group</source-sheet>
+          <target-sheet>Age Group Distribution by Fatigue Condition</target-sheet>
+          <action-type>filter</action-type>
+          <run-on-select>true</run-on-select>
+          <run-on-deselect>true</run-on-deselect>
+          <deselect-action>unfilter</deselect-action>
+        </action>
+      </actions>
+      <style>
+        <style-rule element='dashboard'>
+          <formatting attr='background-color' value='#D2B48C' />
+        </style-rule>
+        <style-rule element='dashboard-title'>
+          <formatting attr='font-family' value='Arial' />
+          <formatting attr='font-size' value='18' />
+          <formatting attr='font-weight' value='bold' />
+        </style-rule>
+      </style>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontsize='18'>Smart Healthcare &amp; Risk Factor Analysis Dashboard</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+    </dashboard>
+  </dashboards>
+
+  <stories>
+    <story name='Smart Healthcare Analytics: Patient Risk &amp; Lifestyle Insights' navigation-style='dots'>
+      <style>
+        <style-rule element='story'>
+          <formatting attr='background-color' value='#D2B48C' />
+        </style-rule>
+      </style>
+      <navigator hidden='false' />
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontsize='18'>Smart Healthcare Analytics: Patient Risk &amp; Lifestyle Insights</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <story-points>
+        <story-point caption='Patient Distribution By Age Group' nav-description='Explore how patients are distributed across age groups in the dataset.'>
+          <snap ref-name='Patient Distribution By Age Group' />
+        </story-point>
+        <story-point caption='Age Group Distribution by Fatigue' nav-description='Understand fatigue conditions across different age groups.'>
+          <snap ref-name='Age Group Distribution by Fatigue Condition' />
+        </story-point>
+        <story-point caption='Exercise Level Distribution' nav-description='Analyze exercise patterns across the patient population.'>
+          <snap ref-name='Exercise Level Distribution' />
+        </story-point>
+        <story-point caption='Average Blood Pressure Across Age Groups' nav-description='Compare average blood pressure levels by age category.'>
+          <snap ref-name='Average Blood Pressure Across Age Groups' />
+        </story-point>
+        <story-point caption='BMI Category vs Heart Disease Rate' nav-description='Discover how BMI category correlates with heart disease prevalence.'>
+          <snap ref-name='BMI Category vs Heart Disease Rate' />
+        </story-point>
+        <story-point caption='Heart Disease by BMI and Exercise Level' nav-description='Explore the combined effect of BMI and exercise on heart disease risk.'>
+          <snap ref-name='Heart Disease by BMI Category and Exercise Level' />
+        </story-point>
+        <story-point caption='Heart Disease vs Diabetes Prevalence' nav-description='Compare heart disease and diabetes prevalence across BMI categories.'>
+          <snap ref-name='Heart Disease vs Diabetes Prevalence' />
+        </story-point>
+      </story-points>
+    </story>
+  </stories>
+
+</workbook>
